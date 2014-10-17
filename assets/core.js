@@ -23,6 +23,7 @@ var MODEL_SHARE_OFFX = 126;
 var MODEL_SHARE_OFFY = -26.;
 var SOUNDPATH_CLICK = ""//var SOUNDPATH_CLICK = "assets\\tongyongyin.mp3"
 
+var initEnd = false;
 var currentBackground = 0;
 var zoomRate = 0.25;
 var zoomRatePreview = 0.5;
@@ -118,11 +119,13 @@ function startLoad()
 
 function initAll()
 {
+	console.log("init 0")
 	$("#databaseVersion").text("数据库版本：" + json.dbver).append([
 		$("<a>").text("[切换]").attr("href", "javascript:void(0)").click(switchDatabase).attr("title", "会重新加载页面"),
 		$("<a>").text("[更新数据包]").attr("href", "javascript:void(0)").click(updateDatabase).attr("title", "解压缩后替换同名文件"),
 	]);
 	refreshLoading(1);
+	console.log("init 1")
 	$.each(clothesType, function(index, value){
 		dressed[value] = "";
 	});
@@ -130,6 +133,7 @@ function initAll()
 		"show" : 0,
 		"zi" : 0,
 	})
+	console.log("init 2")
 	clothesTypeName[100] = "发型";
 	clothesTypeName[200] = "连衣裙";
 	clothesTypeName[300] = "外套";
@@ -148,6 +152,7 @@ function initAll()
 	clothesTypeName[809] = "提包";
 	clothesTypeName[810] = "妆容";
 	initAllInterval();
+	console.log("init 3")
 }
 
 function initAllInterval()
@@ -167,15 +172,24 @@ function initAllInterval()
 
 function initAllEnd()
 {
+	console.log("init 4")
 	$("#main").focus();
+	console.log("init 5")
 	initFrames();
+	console.log("init 6")
 	initFavour();
+	console.log("init 7")
 	dressOnRecord(DEFAULTHAIR, 100);
+	console.log("init 8")
 	setFrame(0);
+	console.log("init 9")
 	refreshViewer();
+	console.log("init 10")
 	refreshLoading(100);
 	$(".loadingbar").fadeOut(500);
 	$("#loading").delay(500).fadeOut(500);
+	console.log("init 11")
+	initEnd = true;
 }
 
 function refreshLoading(percentage)
@@ -367,6 +381,8 @@ function showClothesImage(path, patherr, id, zindex, width, height, left, top)
 		img.attr("errsrc", patherr);
 		img.attr("err", 0);
 		img.attr("src", path);
+		if(initEnd)
+			console.log(path);
 	}
 	img.attr({
 		"px" : (clothesConvX(left, width) + modelOffX) * zoomRatePreview,
@@ -837,6 +853,8 @@ function toErrSrc()
 	if(this.getAttribute("err") <= 0)
 	{
 		this.src = this.getAttribute("errsrc");
+		if(initEnd)
+			console.log(this.getAttribute("errsrc"));
 		this.setAttribute("err", 1);
 	}
 }
